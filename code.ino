@@ -43,7 +43,7 @@ void setup() {
 
 int heartRate = 0;
 float temperature = 0.0;
-int pressure = 0;
+String pressure = "";
 
 void loop() {
   int measureBtnValue = digitalRead(measureBtn);
@@ -81,17 +81,18 @@ float readTemperature(){
   return celsius;
 }
 
-int readPressure(){
+String readPressure(){
   int value = analogRead(pressureGauge);
-  int realValue = mapValue(value, 0, 4095,1, 15);
-  return realValue;
+  int sistolePressure = mapValue(value, 0, 4095,90, 140);
+  int diastolePressure = mapValue(value, 0, 4095,60, 80);
+  String result = "" + String(sistolePressure) + "/" + String(diastolePressure);
+  return result;
 }
 
 
 char bufferJsonHeart[100];
 char bufferJsonTemperature[100];
 char bufferJsonPressure[100];
-
 
 void sendHeartRateToTago(){
   StaticJsonDocument<300> documentoJson;
